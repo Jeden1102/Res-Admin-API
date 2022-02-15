@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Hash;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 class userController extends Controller
@@ -34,14 +35,19 @@ class userController extends Controller
      */
     public function store(Request $request)
     {
-        DB::table("users")->insert([
-            'name'=>$request->name,
-            'email'=>$request->email,
-            'password'=>$request->password,
-            'surname'=>$request->surname,
-            'salary'=>$request->salary,
-            'isAdmin'=>$request->isAdmin,
-        ]);
+        try{
+            $createUser = DB::table("users")->insert([
+                'name'=>$request->name,
+                'email'=>$request->email,
+                'password'=>Hash::make($request->password),
+                'surname'=>$request->surname,
+                'salary'=>$request->salary,
+                'isAdmin'=>$request->isAdmin,
+            ]);
+        return response('User has been created succesfully', 200);
+        }catch(Exception $err){
+            return response('There was some error', 404);
+        }
     }
 
     /**
@@ -52,7 +58,7 @@ class userController extends Controller
      */
     public function show($id)
     {
-        return DB::table("users")->where('id','==',$id);
+        return DB::table("users")->where('id','=',$id)->get();
     }
 
     /**
@@ -75,7 +81,14 @@ class userController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return DB::table("users")->where('id','=',$id)->update([
+            'name'=>$request->name,
+            'email'=>$request->email,
+            'password'=>Hash::make($request->password),
+            'surname'=>$request->surname,
+            'salary'=>$request->salary,
+            'isAdmin'=>$request->isAdmin,
+        ]);
     }
 
     /**
@@ -86,6 +99,6 @@ class userController extends Controller
      */
     public function destroy($id)
     {
-        return DB::table("users")->where('id','==',$id)->destroy();
+        return DB::table("users")->where('id','=',$id)->delete();
     }
 }
