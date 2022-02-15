@@ -35,7 +35,6 @@ class userController extends Controller
     public function store(Request $request)
     {
         DB::table("users")->insert([
-            'id'=>null,
             'name'=>$request->name,
             'email'=>$request->email,
             'password'=>$request->password,
