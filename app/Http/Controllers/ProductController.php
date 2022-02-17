@@ -1,12 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Hash;
-use Exception;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\User;
-class userController extends Controller
+use App\Models\Product;
+
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class userController extends Controller
      */
     public function index()
     {
-        return DB::table("users")->get();
+        return Product::all();
     }
 
     /**
@@ -25,7 +25,7 @@ class userController extends Controller
      */
     public function create()
     {
-
+        //
     }
 
     /**
@@ -36,19 +36,21 @@ class userController extends Controller
      */
     public function store(Request $request)
     {
-        try{
-            $createUser = DB::table("users")->insert([
-                'name'=>$request->name,
-                'email'=>$request->email,
-                'password'=>Hash::make($request->password),
-                'surname'=>$request->surname,
-                'salary'=>$request->salary,
-                'isAdmin'=>$request->isAdmin,
-            ]);
-        return response('User has been created succesfully', 200);
-        }catch(Exception $err){
-            return response('There was some error', 404);
-        }
+        Product::create($request->all());
+
+         $fileUpload = new Product;
+ 
+         if($request->file()) {
+             $file_name = time().'_'.$request->file->getClientOriginalName();
+             $file_path = $request->file('file')->storeAs('uploads', $file_name, 'public');
+ 
+            //  $fileUpload->name = time().'_'.$request->file->getClientOriginalName();
+             $fileUpload->image_url = '/storage/' . $file_path;
+             $fileUpload->save();
+ 
+         }
+         return response()->json(['success'=>'File uploaded successfully.']);
+
     }
 
     /**
@@ -59,7 +61,7 @@ class userController extends Controller
      */
     public function show($id)
     {
-        return DB::table("users")->where('id','=',$id)->get();
+        return Product::find($id);
     }
 
     /**
@@ -70,7 +72,7 @@ class userController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -82,16 +84,9 @@ class userController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $oldPwd = User::find($id)->password;
-        $user =  DB::table("users")->where('id','=',$id)->update([
-            'name'=>$request->name,
-            'email'=>$request->email,
-            'password'=>$request->filled('password') ? Hash::make($request->password) : $oldPwd,
-            'surname'=>$request->surname,
-            'salary'=>$request->salary,
-            'isAdmin'=>$request->isAdmin,
-        ]);
-        return $user;
+        $product = Product::find($id);
+        $product->update($request->all());
+        return $product;
     }
 
     /**
@@ -102,6 +97,6 @@ class userController extends Controller
      */
     public function destroy($id)
     {
-        return DB::table("users")->where('id','=',$id)->delete();
+        return Product::destroy($id);
     }
 }
