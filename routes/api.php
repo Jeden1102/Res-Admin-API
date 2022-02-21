@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\userController;
 use App\Http\Controllers\accountController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\categoriesController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -43,7 +44,10 @@ Route::delete("/products/{id}",[ProductController::class,"destroy"]);
 //update one user
 Route::put("/products/{id}",[ProductController::class,"update"]);
 
-
+//
+Route::resource('/categories', categoriesController::class)->except([
+    'edit', 'create'
+]);
 //ACCOUNT
 Route::post("/login",[accountController::class,"login"]);
 //register
