@@ -120,9 +120,50 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $product = Product::find($id);
-        $product->update($request->all());
-        return $product;
+
+        $file_name = '';
+        if($request->file()) {
+            $file_name = time().'_'.$request->file->getClientOriginalName();
+            $file_path = $request->file('file')->storeAs('uploads', $file_name, 'public');
+           //  $fileUpload->image_url = time().'_'.$request->file->getClientOriginalName();
+           $user =  DB::table("products")->where('id','=',$id)->update([
+            'name'=>$request->name,
+            'image_url'=>$file_name,
+            'price'=>$request->price,
+            'discount'=>$request->discount ? $request->discount : 0,
+            'desc'=>$request->desc,
+            'chicken'=>$request->chicken ? 1 :0,
+            'cheese'=>$request->cheese  ? 1 :0,
+            'tomato'=>$request->tomato ? 1 :0,
+            'paprika'=>$request->paprika ? 1 :0,
+            'beef'=>$request->beef ? 1 :0,
+            'special'=>$request->special ? 1 :0,
+            'size'=>$request->size,
+            'category_id'=>$request->category_id,
+        ]);
+        return $user;
+        }else{
+            try{
+                $user =  DB::table("products")->where('id','=',$id)->update([
+                    'name'=>$request->name,
+                    'price'=>$request->price,
+                    'discount'=>$request->discount ? $request->discount : 0,
+                    'desc'=>$request->desc,
+                    'chicken'=>$request->chicken == 0 ? 0 :1,
+                    'cheese'=>$request->cheese  == 0 ? 0 :1,
+                    'tomato'=>$request->tomato ? 1 :0,
+                    'paprika'=>$request->paprika ? 1 :0,
+                    'beef'=>$request->beef ? 1 :0,
+                    'special'=>$request->special ? 1 :0,
+                    'size'=>$request->size,
+                    'category_id'=>$request->category_id,
+                ]);
+                return $request->chicken;
+            }catch(Exception $err){
+                return $err;
+            }
+
+        }
     }
 
     /**
