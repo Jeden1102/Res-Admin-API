@@ -120,6 +120,9 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // $test = $request->chicken == "true" ? "tak" : "nie";
+        // $test2 = $request->cheese == "true" ? "tak" : "nie";
+        // return response()->json(['cheicken'=>$test,'cheese'=>$test2]);
 
         $file_name = '';
         if($request->file()) {
@@ -132,8 +135,8 @@ class ProductController extends Controller
             'price'=>$request->price,
             'discount'=>$request->discount ? $request->discount : 0,
             'desc'=>$request->desc,
-            'chicken'=>$request->chicken ? 1 :0,
-            'cheese'=>$request->cheese  ? 1 :0,
+            'chicken'=>$request->chicken == "true" ? 1 :0,
+            'cheese'=>$request->cheese == "true"  ? 1 :0,
             'tomato'=>$request->tomato ? 1 :0,
             'paprika'=>$request->paprika ? 1 :0,
             'beef'=>$request->beef ? 1 :0,
@@ -149,12 +152,12 @@ class ProductController extends Controller
                     'price'=>$request->price,
                     'discount'=>$request->discount ? $request->discount : 0,
                     'desc'=>$request->desc,
-                    'chicken'=>$request->chicken == 0 ? 0 :1,
-                    'cheese'=>$request->cheese  == 0 ? 0 :1,
-                    'tomato'=>$request->tomato ? 1 :0,
-                    'paprika'=>$request->paprika ? 1 :0,
-                    'beef'=>$request->beef ? 1 :0,
-                    'special'=>$request->special ? 1 :0,
+                    'chicken'=>$request->chicken == "true" ? 1 :0,
+                    'cheese'=>$request->cheese  == "true" ? 1 :0,
+                    'tomato'=>$request->tomato  == "true"? 1 :0,
+                    'paprika'=>$request->paprika == "true"? 1 :0,
+                    'beef'=>$request->beef == "true"? 1 :0,
+                    'special'=>$request->special == "true"? 1 :0,
                     'size'=>$request->size,
                     'category_id'=>$request->category_id,
                 ]);

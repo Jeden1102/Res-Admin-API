@@ -6,6 +6,7 @@ use App\Http\Controllers\userController;
 use App\Http\Controllers\accountController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\categoriesController;
+use App\Http\Controllers\stoliksController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -44,10 +45,15 @@ Route::delete("/products/{id}",[ProductController::class,"destroy"]);
 //update one user
 Route::put("/products/{id}",[ProductController::class,"update"]);
 
-//
+//CATEGOIRES
 Route::resource('/categories', categoriesController::class)->except([
     'edit', 'create'
 ]);
+//STOLIKI
+Route::resource('/stoliki', stoliksController::class)->except([
+    'edit', 'create'
+]);
+
 //ACCOUNT
 Route::post("/login",[accountController::class,"login"]);
 //register
