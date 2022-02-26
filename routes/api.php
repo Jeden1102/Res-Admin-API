@@ -7,6 +7,8 @@ use App\Http\Controllers\accountController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\categoriesController;
 use App\Http\Controllers\stoliksController;
+use App\Http\Controllers\viewController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -53,7 +55,10 @@ Route::resource('/categories', categoriesController::class)->except([
 Route::resource('/stoliki', stoliksController::class)->except([
     'edit', 'create'
 ]);
-
+//views
+Route::resource('/views', viewController::class)->except([
+    'edit', 'create'
+]);
 //ACCOUNT
 Route::post("/login",[accountController::class,"login"]);
 //register
