@@ -18,7 +18,7 @@ class ChangeStoliksTableCols extends Migration
             $table->string("waiter_name")->nullable()->change();
             $table->boolean("taken")->nullable()->change();
             $table->integer("order_id")->nullable()->change();
-            $table->time("taken_at")->nullable()->change();
+            $table->time("taken_on")->nullable()->change();
         });
     }
 
