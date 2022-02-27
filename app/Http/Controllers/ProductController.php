@@ -63,6 +63,7 @@ class ProductController extends Controller
                     $fileUpload->category_id=$request->category_id;
                     $fileUpload->save();
                 }
+                return  $variants;
             }catch(Exception $err){
                 return $err;
             }
@@ -83,9 +84,9 @@ class ProductController extends Controller
             $fileUpload->size=$request->size;
             $fileUpload->category_id=$request->category_id;
              $fileUpload->save();
+             return $fileUpload;
         }
 
-         return response()->json(['success'=>'File uploaded successfully.']);
 
     }
 
