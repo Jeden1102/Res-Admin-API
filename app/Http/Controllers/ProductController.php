@@ -46,7 +46,6 @@ class ProductController extends Controller
         if($request->filled('variants')){
             try{
                 $variants = json_decode($request->variants,true);
-                return $variants;
                 foreach ($variants as $value) {
                     $fileUpload = new Product;
                     $fileUpload->image_url = $file_name;
@@ -63,13 +62,13 @@ class ProductController extends Controller
                     $fileUpload->size=$value['size'];
                     $fileUpload->category_id=$request->category_id;
                     $fileUpload->save();
+                    return $fileUpload;
                 }
             }catch(Exception $err){
                 return $err;
             }
         }
 
-            return "brak wariantóww";
             $fileUpload = new Product;
             $fileUpload->image_url = $file_name;
             $fileUpload->name=$request->name;
@@ -85,9 +84,7 @@ class ProductController extends Controller
             $fileUpload->size=$request->size;
             $fileUpload->category_id=$request->category_id;
              $fileUpload->save();
-             return $file_name;
-        
-
+             return $fileUpload;
 
     }
 
