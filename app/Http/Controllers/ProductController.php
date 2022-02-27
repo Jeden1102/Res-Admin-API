@@ -43,10 +43,10 @@ class ProductController extends Controller
             $file_path = $request->file('file')->storeAs('uploads', $file_name, 'public');
            //  $fileUpload->image_url = time().'_'.$request->file->getClientOriginalName();
         }
-        return $file_name;
         if($request->filled('variants')){
             try{
                 $variants = json_decode($request->variants,true);
+                return $variants;
                 foreach ($variants as $value) {
                     $fileUpload = new Product;
                     $fileUpload->image_url = $file_name;
@@ -64,12 +64,12 @@ class ProductController extends Controller
                     $fileUpload->category_id=$request->category_id;
                     $fileUpload->save();
                 }
-                return  $variants;
             }catch(Exception $err){
                 return $err;
             }
 
         }else{
+            return "brak wariantóww";
             $fileUpload = new Product;
             $fileUpload->image_url = $file_name;
             $fileUpload->name=$request->name;
