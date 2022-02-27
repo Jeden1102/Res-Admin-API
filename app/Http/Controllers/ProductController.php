@@ -37,13 +37,13 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        return "jazda";
-        $file_name = '';
+        $file_name = 'x';
         if($request->file()) {
             $file_name = time().'_'.$request->file->getClientOriginalName();
             $file_path = $request->file('file')->storeAs('uploads', $file_name, 'public');
            //  $fileUpload->image_url = time().'_'.$request->file->getClientOriginalName();
         }
+        return $file_name;
         if($request->filled('variants')){
             try{
                 $variants = json_decode($request->variants,true);
