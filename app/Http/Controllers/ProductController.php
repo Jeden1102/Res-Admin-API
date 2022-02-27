@@ -62,7 +62,6 @@ class ProductController extends Controller
                     $fileUpload->size=$value['size'];
                     $fileUpload->category_id=$request->category_id;
                     $fileUpload->save();
-                    return $fileUpload;
                 }
             }catch(Exception $err){
                 return $err;
