@@ -37,6 +37,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        return "jazda";
         $file_name = '';
         if($request->file()) {
             $file_name = time().'_'.$request->file->getClientOriginalName();
