@@ -67,8 +67,8 @@ class ProductController extends Controller
             }catch(Exception $err){
                 return $err;
             }
+        }
 
-        }else{
             return "brak wariantóww";
             $fileUpload = new Product;
             $fileUpload->image_url = $file_name;
@@ -86,7 +86,7 @@ class ProductController extends Controller
             $fileUpload->category_id=$request->category_id;
              $fileUpload->save();
              return $file_name;
-        }
+        
 
 
     }
