@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Product;
 use Exception;
-
+use Illuminate\Support\Facades\Storage;
 class ProductController extends Controller
 {
     /**
@@ -38,11 +38,17 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $file_name = 'x';
-        if($request->file()) {
-            $file_name = time().'_'.$request->file->getClientOriginalName();
-            $file_path = $request->file('file')->storeAs('uploads', $file_name, 'public');
-           //  $fileUpload->image_url = time().'_'.$request->file->getClientOriginalName();
+        try{
+            if($request->file()) {
+                $file_name = time().'_'.$request->file->getClientOriginalName();
+                $file_path = $request->file('file')->storeAs('uploads', $file_name, 's3');
+                // Storage::disk('s3')->put($file_name,file_get_contents($request->file()));
+                // $fileUpload->image_url = time().'_'.$request->file->getClientOriginalName();
         }
+        }catch(Exception $err){
+            return $err;
+        }
+
         if($request->filled('variants')){
             try{
                 $variants = json_decode($request->variants,true);
@@ -124,24 +130,29 @@ class ProductController extends Controller
 
         $file_name = '';
         if($request->file()) {
-            $file_name = time().'_'.$request->file->getClientOriginalName();
-            $file_path = $request->file('file')->storeAs('uploads', $file_name, 'public');
-           //  $fileUpload->image_url = time().'_'.$request->file->getClientOriginalName();
-           $user =  DB::table("products")->where('id','=',$id)->update([
-            'name'=>$request->name,
-            'image_url'=>$file_name,
-            'price'=>$request->price,
-            'discount'=>$request->discount ? $request->discount : 0,
-            'desc'=>$request->desc,
-            'chicken'=>$request->chicken == "true" ? 1 :0,
-            'cheese'=>$request->cheese == "true"  ? 1 :0,
-            'tomato'=>$request->tomato ? 1 :0,
-            'paprika'=>$request->paprika ? 1 :0,
-            'beef'=>$request->beef ? 1 :0,
-            'special'=>$request->special ? 1 :0,
-            'size'=>$request->size,
-            'category_id'=>$request->category_id,
-        ]);
+            try{
+                $file_name = time().'_'.$request->file->getClientOriginalName();
+                $file_path = $request->file('file')->storeAs('uploads', $file_name, 's3');
+               //  $fileUpload->image_url = time().'_'.$request->file->getClientOriginalName();
+               $user =  DB::table("products")->where('id','=',$id)->update([
+                'name'=>$request->name,
+                'image_url'=>$file_name,
+                'price'=>$request->price,
+                'discount'=>$request->discount ? $request->discount : 0,
+                'desc'=>$request->desc,
+                'chicken'=>$request->chicken == "true" ? 1 :0,
+                'cheese'=>$request->cheese == "true"  ? 1 :0,
+                'tomato'=>$request->tomato ? 1 :0,
+                'paprika'=>$request->paprika ? 1 :0,
+                'beef'=>$request->beef ? 1 :0,
+                'special'=>$request->special ? 1 :0,
+                'size'=>$request->size,
+                'category_id'=>$request->category_id,
+            ]);
+            }catch(Exception $err){
+                return $err;
+            }
+
         return $user;
         }else{
             try{
