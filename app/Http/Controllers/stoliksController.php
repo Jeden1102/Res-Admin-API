@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\stolik;
+use Illuminate\Support\Facades\DB;
+
 class stoliksController extends Controller
 {
     /**
@@ -34,6 +36,15 @@ class stoliksController extends Controller
      */
     public function store(Request $request)
     {
+        if($request->arr){
+            foreach ($request->arr as $value) {
+                stolik::create([
+                    'xCoord'=>$value['xCoord'],
+                    'yCoord'=>$value['yCoord'],
+                ]); 
+            }
+            return "ok";
+        }
         return stolik::create($request->all());
     }
 
@@ -82,5 +93,8 @@ class stoliksController extends Controller
     public function destroy($id)
     {
         return stolik::destroy($id);
+    }
+    public function deleteAll(){
+        DB::table('stoliks')->delete();
     }
 }

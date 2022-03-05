@@ -6,6 +6,7 @@ use App\Http\Controllers\userController;
 use App\Http\Controllers\accountController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\categoriesController;
+use App\Http\Controllers\editProfile;
 use App\Http\Controllers\stoliksController;
 use App\Http\Controllers\viewController;
 
@@ -55,11 +56,18 @@ Route::resource('/categories', categoriesController::class)->except([
 Route::resource('/stoliki', stoliksController::class)->except([
     'edit', 'create'
 ]);
+//delete all stoliki
+Route::post('/deleteStoliki',[stoliksController::class,"deleteAll"]);
 //views
 Route::resource('/views', viewController::class)->except([
     'edit', 'create'
 ]);
+
 //ACCOUNT
 Route::post("/login",[accountController::class,"login"]);
 //register
 Route::post('/register',[accountController::class,"create"]);
+
+//profile edit
+Route::put("/profile/{id}",[editProfile::class,"update"]);
+Route::put("/changePassword/{id}",[editProfile::class,"changePassword"]);

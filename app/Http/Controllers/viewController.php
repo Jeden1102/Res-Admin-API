@@ -83,4 +83,5 @@ class viewController extends Controller
     {
         return view::destroy($id);
     }
+
 }
