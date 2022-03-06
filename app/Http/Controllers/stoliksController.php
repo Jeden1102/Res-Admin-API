@@ -80,6 +80,15 @@ class stoliksController extends Controller
     public function update(Request $request, $id)
     {
         $product = stolik::find($id);
+        if($request->waiterEdit){
+            $user =  DB::table("stoliks")->where('id','=',$id)->update([
+                'taken'=>$request->taken,
+                'taken_at'=>$request->taken_at,
+                'waiter_id'=>$request->waiter_id,
+                'waiter_name'=>$request->waiter_name,
+            ]);
+            return $user;
+        }
         $product->update($request->all());
         return $product;
     }

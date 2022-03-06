@@ -39,6 +39,7 @@ Route::put("/users/{id}",[userController::class,"update"]);
 
 //PRODUCTS
 Route::get("/products",[ProductController::class,"index"]);
+Route::get("/productsGrupped",[ProductController::class,"productsGrupped"]);
 //add user
 Route::post("/addProduct",[ProductController::class,"store"]);
 //get one user

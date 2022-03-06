@@ -18,7 +18,9 @@ class ProductController extends Controller
     {
         return Product::all();
     }
-
+    public function productsGrupped(){
+        return Product::all()->groupBy("category_id");
+    }
     /**
      * Show the form for creating a new resource.
      *
