@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\stolik;
-use Illuminate\Support\Facades\DB;
-
-class stoliksController extends Controller
+use App\Models\order;
+use Exception;
+class ordersController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +14,7 @@ class stoliksController extends Controller
      */
     public function index()
     {
-        return stolik::all();
+        return order::all();
     }
 
     /**
@@ -36,16 +35,11 @@ class stoliksController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->arr){
-            foreach ($request->arr as $value) {
-                stolik::create([
-                    'xCoord'=>$value['xCoord'],
-                    'yCoord'=>$value['yCoord'],
-                ]); 
-            }
-            return "ok";
+        try{
+        order::create($request->all());
+        }catch(Exception $err){
+            return $err;
         }
-        return stolik::create($request->all());
     }
 
     /**
@@ -56,7 +50,8 @@ class stoliksController extends Controller
      */
     public function show($id)
     {
-        return stolik::find($id);
+        return order::find($id);
+
     }
 
     /**
@@ -79,28 +74,9 @@ class stoliksController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if($request->release){
-            $user =  DB::table("stoliks")->where('id','=',$id)->update([
-                'taken'=>0,
-                'taken_at'=>null,
-                'waiter_id'=>null,
-                'waiter_name'=>null,
-            ]);
-            return $user;
-        }
-        $product = stolik::find($id);
-        if($request->waiterEdit){
-            $user =  DB::table("stoliks")->where('id','=',$id)->update([
-                'taken'=>$request->taken,
-                'taken_at'=>$request->taken_at,
-                'waiter_id'=>$request->waiter_id,
-                'waiter_name'=>$request->waiter_name,
-            ]);
-            return $user;
-        }
-        $product->update($request->all());
-        return $product;
+        //
     }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -109,9 +85,6 @@ class stoliksController extends Controller
      */
     public function destroy($id)
     {
-        return stolik::destroy($id);
-    }
-    public function deleteAll(){
-        DB::table('stoliks')->delete();
+        return order::destroy($id);
     }
 }

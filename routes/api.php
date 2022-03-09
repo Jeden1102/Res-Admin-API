@@ -7,6 +7,8 @@ use App\Http\Controllers\accountController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\categoriesController;
 use App\Http\Controllers\editProfile;
+use App\Http\Controllers\MovieController;
+use App\Http\Controllers\ordersController;
 use App\Http\Controllers\stoliksController;
 use App\Http\Controllers\viewController;
 
@@ -61,6 +63,15 @@ Route::resource('/stoliki', stoliksController::class)->except([
 Route::post('/deleteStoliki',[stoliksController::class,"deleteAll"]);
 //views
 Route::resource('/views', viewController::class)->except([
+    'edit', 'create'
+]);
+//movies
+Route::resource('/movies', MovieController::class)->except([
+    'edit', 'create'
+]);
+
+//orders
+Route::resource('/orders', ordersController::class)->except([
     'edit', 'create'
 ]);
 

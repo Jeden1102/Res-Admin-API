@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\stolik;
-use Illuminate\Support\Facades\DB;
-
-class stoliksController extends Controller
+use Exception;
+use Illuminate\Support\Facades\Storage;
+use App\Models\movie;
+class MovieController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class stoliksController extends Controller
      */
     public function index()
     {
-        return stolik::all();
+        return movie::all();
     }
 
     /**
@@ -36,16 +36,26 @@ class stoliksController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->arr){
-            foreach ($request->arr as $value) {
-                stolik::create([
-                    'xCoord'=>$value['xCoord'],
-                    'yCoord'=>$value['yCoord'],
-                ]); 
-            }
-            return "ok";
+        $file_name = 'x';
+        try{
+            if($request->file()) {
+                $file_name = time().'_'.$request->file->getClientOriginalName();
+                // $file_path = $request->file('file')->storeAs('uploads', $file_name, 's3');
+                $file_path = $request->file('file')->storeAs('uploads', $file_name, 'public');
+            //    $url = Storage::put('public/uploads', $request->file('file'));
+            //    Storage::disk('local')->put($file_name, $request->file('file'));
+                // Storage::disk('s3')->put($file_name,file_get_contents($request->file()));
+                // $fileUpload->image_url = time().'_'.$request->file->getClientOriginalName();
+                $fileUpload = new movie;
+                $fileUpload->path = $file_name;
+                $fileUpload->save();
+                return $file_name;
+        }else{
+            return "nie";
         }
-        return stolik::create($request->all());
+        }catch(Exception $err){
+            return $err;
+        }
     }
 
     /**
@@ -56,7 +66,7 @@ class stoliksController extends Controller
      */
     public function show($id)
     {
-        return stolik::find($id);
+        //
     }
 
     /**
@@ -79,28 +89,9 @@ class stoliksController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if($request->release){
-            $user =  DB::table("stoliks")->where('id','=',$id)->update([
-                'taken'=>0,
-                'taken_at'=>null,
-                'waiter_id'=>null,
-                'waiter_name'=>null,
-            ]);
-            return $user;
-        }
-        $product = stolik::find($id);
-        if($request->waiterEdit){
-            $user =  DB::table("stoliks")->where('id','=',$id)->update([
-                'taken'=>$request->taken,
-                'taken_at'=>$request->taken_at,
-                'waiter_id'=>$request->waiter_id,
-                'waiter_name'=>$request->waiter_name,
-            ]);
-            return $user;
-        }
-        $product->update($request->all());
-        return $product;
+        //
     }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -109,9 +100,6 @@ class stoliksController extends Controller
      */
     public function destroy($id)
     {
-        return stolik::destroy($id);
-    }
-    public function deleteAll(){
-        DB::table('stoliks')->delete();
+        //
     }
 }
