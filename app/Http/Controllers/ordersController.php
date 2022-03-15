@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\order;
 use Exception;
@@ -51,7 +52,6 @@ class ordersController extends Controller
     public function show($id)
     {
         return order::find($id);
-
     }
 
     /**
@@ -86,5 +86,49 @@ class ordersController extends Controller
     public function destroy($id)
     {
         return order::destroy($id);
+    }
+    public function getTipsData($id){
+        return order::where("waiter_id",$id)->get();
+    }
+    public function getTipsByDate($id){
+        $tipsByMonthYear = order::select(
+            "id" ,
+            DB::raw("(sum(tip)) as total_tips"),
+            DB::raw("(count(*)) as total_orders"),
+            DB::raw("(DATE_FORMAT(created_at, '%m-%Y')) as month_year")
+            )
+            ->orderBy('created_at')
+            ->groupBy(DB::raw("DATE_FORMAT(created_at, '%m-%Y')"))
+            ->get();
+
+        $tipsByYear = order::select(
+                "id" ,
+                DB::raw("(sum(tip)) as total_tips"),
+                DB::raw("(count(*)) as total_orders"),
+                DB::raw("(DATE_FORMAT(created_at, '%Y')) as month_year")
+                )
+                ->orderBy('created_at')
+                ->groupBy(DB::raw("DATE_FORMAT(created_at, '%%-%Y')"))
+                ->get();
+
+        $lastWeek = order::select(
+        "id" ,
+        DB::raw("(sum(tip)) as total_tips"),
+        DB::raw("(count(*)) as total_orders"),
+        DB::raw("Date(created_at) as data")
+        )
+        ->whereBetween('created_at', 
+            [Carbon::now()->subWeek()->startOfWeek(), Carbon::now()])
+        ->orderBy('created_at')
+        ->groupBy(DB::raw('Date(created_at)'))
+        ->get();        
+        
+  
+
+            return [
+                'tipsByMonthYear'=>$tipsByMonthYear,
+                'tipsByYear'=>$tipsByYear,
+                'lastWeek'=>$lastWeek,
+            ];
     }
 }

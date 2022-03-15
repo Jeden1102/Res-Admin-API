@@ -5,15 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class order extends Model
+class work_time extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'sum_price',
         'waiter_id',
-        'notes',
-        'table_id',
-        'products',
-        'tip',
+        'end_time',
+        'end_day',
+        'hours_worked',
     ];
 }

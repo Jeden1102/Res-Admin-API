@@ -11,6 +11,7 @@ use App\Http\Controllers\MovieController;
 use App\Http\Controllers\ordersController;
 use App\Http\Controllers\stoliksController;
 use App\Http\Controllers\viewController;
+use App\Http\Controllers\workController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,6 +75,16 @@ Route::resource('/movies', MovieController::class)->except([
 Route::resource('/orders', ordersController::class)->except([
     'edit', 'create'
 ]);
+//tip data
+Route::get('/tipData/{id}',[ordersController::class,"getTipsData"]);
+Route::get('/tipByDate/{id}',[ordersController::class,"getTipsByDate"]);
+
+//work time
+Route::resource('/work', workController::class)->except([
+    'edit', 'create'
+]);
+//sum work time
+Route::get('/sumWork/{id}',[workController::class,"sumHoursWorked"]);
 
 //ACCOUNT
 Route::post("/login",[accountController::class,"login"]);
