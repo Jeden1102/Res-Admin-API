@@ -112,7 +112,7 @@ class workController extends Controller
     }
     public function sumHoursWorked($id){
         try{
-            $test = DB::select("SELECT SUM(hours_worked::int) as hours_worked,DATE_TRUNC('year','created_at') AS  month_year from orders ORDER BY created_at GROUP BY DATE_TRUNC('year',created_at) AS  month_year");
+            $test = DB::select("SELECT SUM(hours_worked::int) as hours_worked,DATE_TRUNC('year','created_at') AS  month_year from orders ORDER BY 'created_at' GROUP BY DATE_TRUNC('year','created_at')");
         }catch(Exception $err){
             return $err;
         }
