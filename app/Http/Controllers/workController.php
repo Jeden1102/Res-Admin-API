@@ -125,18 +125,18 @@ class workController extends Controller
             $worked_year_month = work_time::select(
                 "id" ,
                 DB::raw("SUM(hours_worked::int) as hours_worked"),
-                DB::raw("to_date(cast(created_at as TEXT),'%m-%Y') as month_year")
+                DB::raw("DATE_TRUNC('month',created_at) AS  month_year"),
                 )
                 ->orderBy('created_at')
-                ->groupBy(DB::raw("DATE_TRUNC('month',created_at) AS  month_year"))
+                ->groupBy(2)
                 ->get();
                 $worked_year = work_time::select(
                     "id" ,
                     DB::raw("SUM(hours_worked::int) as hours_worked"),
-                    DB::raw("to_date(cast(created_at as TEXT),'%Y')) as month_year")
+                    DB::raw("DATE_TRUNC('year',created_at) AS  month_year"),
                     )
                     ->orderBy('created_at')
-                    ->groupBy(DB::raw("DATE_TRUNC('year',created_at) AS  month_year"))
+                    ->groupBy(2)
                     ->get();
         
             $lastWeek = work_time::select(
