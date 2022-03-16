@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\view;
+use Exception;
 class viewController extends Controller
 {
     /**
@@ -34,7 +35,12 @@ class viewController extends Controller
      */
     public function store(Request $request)
     {
-        return view::create($request->all());
+        try{
+            return view::create($request->all());
+        }catch(Exception $err){
+            return $err;
+        }
+        
     }
 
     /**
