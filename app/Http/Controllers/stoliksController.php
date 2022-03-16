@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\stolik;
 use Illuminate\Support\Facades\DB;
+use Exception;
 
 class stoliksController extends Controller
 {
@@ -98,7 +99,11 @@ class stoliksController extends Controller
             ]);
             return $user;
         }
-        $product->update($request->all());
+        try{
+            $product->update($request->all());
+        }catch(Exception $err){
+            return $err;
+        }
         return $product;
     }
     /**
