@@ -91,12 +91,17 @@ class stoliksController extends Controller
         }
         $product = stolik::find($id);
         if($request->waiterEdit){
-            $user =  DB::table("stoliks")->where('id','=',$id)->update([
-                'taken'=>$request->taken,
-                'taken_at'=>$request->taken_at,
-                'waiter_id'=>$request->waiter_id,
-                'waiter_name'=>$request->waiter_name,
-            ]);
+            try{
+                $user =  DB::table("stoliks")->where('id','=',$id)->update([
+                    'taken'=>$request->taken,
+                    'taken_at'=>$request->taken_at,
+                    'waiter_id'=>$request->waiter_id,
+                    'waiter_name'=>$request->waiter_name,
+                ]);
+            }catch(Exception $err){
+                return $err;
+            }
+
             return $user;
         }
         try{
