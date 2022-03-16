@@ -125,18 +125,18 @@ class workController extends Controller
             $worked_year_month = work_time::select(
                 "id" ,
                 DB::raw("SUM(hours_worked::int) as hours_worked"),
-                DB::raw("(DATE_FORMAT(created_at, '%m-%Y')) as month_year")
+                DB::raw("to_date(cast(created_at as TEXT),'%m-%Y') as month_year")
                 )
                 ->orderBy('created_at')
-                ->groupBy(DB::raw("DATE_FORMAT(created_at, '%m-%Y')"))
+                ->groupBy(DB::raw("to_date(cast(created_at as TEXT),'%m-%Y') as month_year"))
                 ->get();
                 $worked_year = work_time::select(
                     "id" ,
                     DB::raw("SUM(hours_worked::int) as hours_worked"),
-                    DB::raw("(DATE_FORMAT(created_at, '%Y')) as month_year")
+                    DB::raw("to_date(cast(created_at as TEXT),'%Y')) as month_year")
                     )
                     ->orderBy('created_at')
-                    ->groupBy(DB::raw("DATE_FORMAT(created_at, '%%-%Y')"))
+                    ->groupBy(DB::raw("to_date(cast(created_at as TEXT),'%%-%Y')"))
                     ->get();
         
             $lastWeek = work_time::select(
@@ -177,4 +177,44 @@ class workController extends Controller
         $s = $totaltime - ($m * 60);
         return "$h:$m:$s";
     }
+    //local
+    /*
+                $data = work_time::select(
+                'hours_worked',
+                )->where('waiter_id',$id)->get();
+            //total hours    
+            $totalHours = $this->sumHours($data);
+            //total orders
+            $total_orders  = order::select(
+            DB::raw("(count(*)) as total_orders"),
+            )->where('waiter_id',$id)->get();
+            //BY DATE
+            $worked_year_month = work_time::select(
+                "id" ,
+                DB::raw("SUM(hours_worked::int) as hours_worked"),
+                DB::raw("(DATE_FORMAT(created_at, '%m-%Y')) as month_year")
+                )
+                ->orderBy('created_at')
+                ->groupBy(DB::raw("DATE_FORMAT(created_at, '%m-%Y')"))
+                ->get();
+                $worked_year = work_time::select(
+                    "id" ,
+                    DB::raw("SUM(hours_worked::int) as hours_worked"),
+                    DB::raw("(DATE_FORMAT(created_at, '%Y')) as month_year")
+                    )
+                    ->orderBy('created_at')
+                    ->groupBy(DB::raw("DATE_FORMAT(created_at, '%%-%Y')"))
+                    ->get();
+        
+            $lastWeek = work_time::select(
+            "id" ,
+            DB::raw("SUM(hours_worked::int) as hours_worked"),
+            DB::raw("Date(created_at) as data")
+            )
+            ->whereBetween('created_at', 
+                [Carbon::now()->subWeek()->startOfWeek(), Carbon::now()])
+            ->orderBy('created_at')
+            ->groupBy(DB::raw('Date(created_at)'))
+            ->get(); 
+            */
 }
