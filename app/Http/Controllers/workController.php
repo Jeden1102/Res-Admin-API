@@ -111,13 +111,7 @@ class workController extends Controller
         //
     }
     public function sumHoursWorked($id){
-        try{
-            $test = DB::select("SELECT SUM(hours_worked::int) as hours_worked,DATE_TRUNC('year',created_at) AS  month_year from orders ORDER BY created_at GROUP BY DATE_TRUNC('year',created_at)");
-        }catch(Exception $err){
-            return $err;
-        }
 
-        return $test;
         try{
             $data = work_time::select(
                 'hours_worked',
@@ -131,26 +125,24 @@ class workController extends Controller
             //BY DATE
             $worked_year_month = work_time::select(
                 "id" ,
-                DB::raw("SUM(hours_worked::int) as hours_worked"),
-                DB::raw("DATE_TRUNC('month',created_at) AS  month_year"),
+                DB::raw("SUM(hours_worked) as hours_worked"),
+                DB::raw("(DATE_FORMAT(created_at, '%m-%Y')) as month_year")
                 )
                 ->orderBy('created_at')
-                ->groupBy(DB::raw("DATE_TRUNC('month',created_at) AS  month_year"))
+                ->groupBy(DB::raw("DATE_FORMAT(created_at, '%m-%Y')"))
                 ->get();
-                // $worked_year = work_time::select(
-                //     "id" ,
-                //     DB::raw("SUM(hours_worked::int) as hours_worked"),
-                //     DB::raw("DATE_TRUNC('year',created_at) AS  month_year"),
-                //     )
-                //     ->orderBy('created_at')
-                //     ->DB::raw()
-                //     ->groupBy(DB::raw("DATE_TRUNC('year',created_at) AS  month_year"))
-                //     ->get();
-
+                $worked_year = work_time::select(
+                    "id" ,
+                    DB::raw("SUM(hours_worked) as hours_worked"),
+                    DB::raw("(DATE_FORMAT(created_at, '%Y')) as month_year")
+                    )
+                    ->orderBy('created_at')
+                    ->groupBy(DB::raw("DATE_FORMAT(created_at, '%%-%Y')"))
+                    ->get();
         
             $lastWeek = work_time::select(
             "id" ,
-            DB::raw("SUM(hours_worked::int) as hours_worked"),
+            DB::raw("SUM(hours_worked) as hours_worked"),
             DB::raw("Date(created_at) as data")
             )
             ->whereBetween('created_at', 
@@ -166,7 +158,7 @@ class workController extends Controller
            'sumWorked'=>$totalHours,
            'totalOrders'=>$total_orders,
            'worked_year_month'=>$worked_year_month,
-        //    'worked_year'=>$worked_year,
+           'worked_year'=>$worked_year,
            'lastWeek'=>$lastWeek,
        ];
     }
