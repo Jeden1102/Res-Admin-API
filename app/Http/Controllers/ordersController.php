@@ -91,37 +91,42 @@ class ordersController extends Controller
         return order::where("waiter_id",$id)->get();
     }
     public function getTipsByDate($id){
-        $tipsByMonthYear = order::select(
-            "id" ,
-            DB::raw("(sum(tip)) as total_tips"),
-            DB::raw("(count(*)) as total_orders"),
-            DB::raw("(DATE_FORMAT(created_at, '%m-%Y')) as month_year")
-            )
-            ->orderBy('created_at')
-            ->groupBy(DB::raw("DATE_FORMAT(created_at, '%m-%Y')"))
-            ->get();
-
-        $tipsByYear = order::select(
+        try{
+            $tipsByMonthYear = order::select(
                 "id" ,
                 DB::raw("(sum(tip)) as total_tips"),
                 DB::raw("(count(*)) as total_orders"),
-                DB::raw("(DATE_FORMAT(created_at, '%Y')) as month_year")
+                DB::raw("(DATE_FORMAT(created_at, '%m-%Y')) as month_year")
                 )
                 ->orderBy('created_at')
-                ->groupBy(DB::raw("DATE_FORMAT(created_at, '%%-%Y')"))
+                ->groupBy(DB::raw("DATE_FORMAT(created_at, '%m-%Y')"))
                 ->get();
-
-        $lastWeek = order::select(
-        "id" ,
-        DB::raw("(sum(tip)) as total_tips"),
-        DB::raw("(count(*)) as total_orders"),
-        DB::raw("Date(created_at) as data")
-        )
-        ->whereBetween('created_at', 
-            [Carbon::now()->subWeek()->startOfWeek(), Carbon::now()])
-        ->orderBy('created_at')
-        ->groupBy(DB::raw('Date(created_at)'))
-        ->get();        
+    
+            $tipsByYear = order::select(
+                    "id" ,
+                    DB::raw("(sum(tip)) as total_tips"),
+                    DB::raw("(count(*)) as total_orders"),
+                    DB::raw("(DATE_FORMAT(created_at, '%Y')) as month_year")
+                    )
+                    ->orderBy('created_at')
+                    ->groupBy(DB::raw("DATE_FORMAT(created_at, '%%-%Y')"))
+                    ->get();
+    
+            $lastWeek = order::select(
+            "id" ,
+            DB::raw("(sum(tip)) as total_tips"),
+            DB::raw("(count(*)) as total_orders"),
+            DB::raw("Date(created_at) as data")
+            )
+            ->whereBetween('created_at', 
+                [Carbon::now()->subWeek()->startOfWeek(), Carbon::now()])
+            ->orderBy('created_at')
+            ->groupBy(DB::raw('Date(created_at)'))
+            ->get();    
+        }catch(Exception $err){
+            return $err;
+        }
+    
         
   
 
