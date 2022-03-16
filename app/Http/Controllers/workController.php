@@ -128,7 +128,7 @@ class workController extends Controller
                 DB::raw("DATE_TRUNC('month',created_at) AS  month_year"),
                 )
                 ->orderBy('created_at')
-                ->groupBy(2)
+                ->groupBy(DB::raw("DATE_TRUNC('month',created_at) AS  month_year"))
                 ->get();
                 $worked_year = work_time::select(
                     "id" ,
@@ -136,7 +136,7 @@ class workController extends Controller
                     DB::raw("DATE_TRUNC('year',created_at) AS  month_year"),
                     )
                     ->orderBy('created_at')
-                    ->groupBy(2)
+                    ->groupBy(DB::raw("DATE_TRUNC('year',created_at) AS  month_year"))
                     ->get();
         
             $lastWeek = work_time::select(
