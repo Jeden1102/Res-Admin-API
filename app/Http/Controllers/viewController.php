@@ -35,6 +35,7 @@ class viewController extends Controller
      */
     public function store(Request $request)
     {
+        return "HELLO";
         try{
             return view::create($request->all());
         }catch(Exception $err){
