@@ -26,7 +26,7 @@ PIE :
             "id" ,
             DB::raw("(count(*)) as total_orders"),
             DB::raw("(sum(sum_price)) as total_income"),
-            DB::raw("(DATE_FORMAT(created_at, '%m-%Y')) as month_year")
+            DB::raw("(DATE_FORMAT(created_at, '%m-%Y')) as data")
             )
             ->orderBy('created_at')
             ->groupBy(DB::raw("DATE_FORMAT(created_at, '%m-%Y')"))
@@ -35,7 +35,7 @@ PIE :
                 "id" ,
                 DB::raw("(count(*)) as total_orders"),
                 DB::raw("(sum(sum_price)) as total_income"),
-                DB::raw("(DATE_FORMAT(created_at, '%Y')) as month_year")
+                DB::raw("(DATE_FORMAT(created_at, '%Y')) as data")
                 )
                 ->orderBy('created_at')
                 ->groupBy(DB::raw("DATE_FORMAT(created_at, '%%-%Y')"))
