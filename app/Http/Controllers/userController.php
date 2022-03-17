@@ -44,6 +44,7 @@ class userController extends Controller
                 'surname'=>$request->surname,
                 'salary'=>$request->salary,
                 'isAdmin'=>$request->isAdmin,
+                'created_at'=>$request->created_at
             ]);
         return response('User has been created succesfully', 200);
         }catch(Exception $err){
