@@ -9,6 +9,7 @@ use App\Http\Controllers\categoriesController;
 use App\Http\Controllers\editProfile;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\ordersController;
+use App\Http\Controllers\salesInfo;
 use App\Http\Controllers\stoliksController;
 use App\Http\Controllers\viewController;
 use App\Http\Controllers\workController;
@@ -78,6 +79,8 @@ Route::resource('/orders', ordersController::class)->except([
 //tip data
 Route::get('/tipData/{id}',[ordersController::class,"getTipsData"]);
 Route::get('/tipByDate/{id}',[ordersController::class,"getTipsByDate"]);
+//sales info 
+Route::get('/salesInfo',[salesInfo::class,"ordersInfo"]);
 
 //work time
 Route::resource('/work', workController::class)->except([
