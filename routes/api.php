@@ -9,6 +9,7 @@ use App\Http\Controllers\categoriesController;
 use App\Http\Controllers\editProfile;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\ordersController;
+use App\Http\Controllers\OrdersDelivery;
 use App\Http\Controllers\salesInfo;
 use App\Http\Controllers\stoliksController;
 use App\Http\Controllers\viewController;
@@ -74,6 +75,11 @@ Route::resource('/movies', MovieController::class)->except([
 
 //orders
 Route::resource('/orders', ordersController::class)->except([
+    'edit', 'create'
+]);
+//orders delivery
+
+Route::resource('/ordersDelivery', OrdersDelivery::class)->except([
     'edit', 'create'
 ]);
 //tip data
