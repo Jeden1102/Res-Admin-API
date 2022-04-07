@@ -2,9 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\orderDelivery;
 use Exception;
+//mail
+use App\Mail\Subscribe;
+use App\Models\Subscriber;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 class OrdersDelivery extends Controller
 {
     /**
@@ -37,6 +43,7 @@ class OrdersDelivery extends Controller
     {
         try{
             orderDelivery::create($request->all());
+            Mail::to($request->email)->send(new Subscribe($request));
             }catch(Exception $err){
                 return $err;
             }
