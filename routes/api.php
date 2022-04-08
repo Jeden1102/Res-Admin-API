@@ -6,6 +6,7 @@ use App\Http\Controllers\userController;
 use App\Http\Controllers\accountController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\categoriesController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\editProfile;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\ordersController;
@@ -103,3 +104,7 @@ Route::post('/register',[accountController::class,"create"]);
 //profile edit
 Route::put("/profile/{id}",[editProfile::class,"update"]);
 Route::put("/changePassword/{id}",[editProfile::class,"changePassword"]);
+
+
+//contact form
+Route::post('/contact', [ContactController::class, 'subscribe']);
