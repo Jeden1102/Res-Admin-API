@@ -82,20 +82,25 @@ class OrdersDelivery extends Controller
      */
     public function update(Request $request, $id)
     {
-        if($request->action==1){
-            $order =  DB::table("orders_delivery")->where('id','=',$id)->update([
-                'status'=>1,
-                'statusInfo'=>$request->info,
-            ]);
-            // Mail::to($request->email)->send(new OrderMenage($request->orderDetails));
+        try{
+            if($request->action==1){
+                $order =  DB::table("orders_delivery")->where('id','=',$id)->update([
+                    'status'=>1,
+                    'statusInfo'=>$request->info,
+                ]);
+                Mail::to($request->email)->send(new OrderMenage($request->orderDetails));
+            }
+            if($request->action==2){
+                $order =  DB::table("orders_delivery")->where('id','=',$id)->update([
+                    'status'=>2,
+                    'statusInfo'=>$request->info,
+                ]);
+                Mail::to($request->email)->send(new OrderMenage($request->orderDetails));
+            }
+        }catch(Exception $err){
+            return$err;
         }
-        if($request->action==2){
-            $order =  DB::table("orders_delivery")->where('id','=',$id)->update([
-                'status'=>2,
-                'statusInfo'=>$request->info,
-            ]);
-            // Mail::to($request->email)->send(new OrderMenage($request->orderDetails));
-        }
+
     }
 
     /**
