@@ -21,9 +21,7 @@ class OrdersDelivery extends Controller
      */
     public function index()
     {
-       return DB::table('orders_delivery')
-                ->groupBy('status')
-                ->get();
+        return orderDelivery::all()->groupBy("category_id");
     }
 
     /**
