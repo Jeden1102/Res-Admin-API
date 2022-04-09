@@ -14,7 +14,7 @@ class AddColumnsToOrderDeliveryTable extends Migration
     public function up()
     {
         Schema::table('orders_delivery', function (Blueprint $table) {
-            $table->int('status')->default(0);
+            $table->integer('status')->default(0);
             $table->longText('statusInfo')->default('');
         });
     }
