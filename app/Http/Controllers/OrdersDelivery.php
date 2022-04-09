@@ -84,11 +84,13 @@ class OrdersDelivery extends Controller
         if($request->action==1){
             $order =  DB::table("orders_delivery")->where('id','=',$id)->update([
                 'status'=>1,
+                'statusInfo'=>$request->info,
             ]);
         }
         if($request->action==2){
             $order =  DB::table("orders_delivery")->where('id','=',$id)->update([
                 'status'=>2,
+                'statusInfo'=>$request->info,
             ]);
         }
     }
