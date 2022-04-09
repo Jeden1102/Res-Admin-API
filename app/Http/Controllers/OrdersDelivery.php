@@ -20,7 +20,7 @@ class OrdersDelivery extends Controller
      */
     public function index()
     {
-        return orderDelivery::groupBy("status")->all();
+        return orderDelivery::groupBy("status")->get();
     }
 
     /**
