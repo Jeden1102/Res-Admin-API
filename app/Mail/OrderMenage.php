@@ -20,7 +20,7 @@ class OrderMenage extends Mailable
 
     public function __construct($info)
     {
-        $this->info = $info->orderDetails;
+        $this->info = $info;
     }
 
     /**
