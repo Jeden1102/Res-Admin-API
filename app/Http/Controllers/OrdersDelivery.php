@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\orderDelivery;
 use Exception;
@@ -20,7 +21,9 @@ class OrdersDelivery extends Controller
      */
     public function index()
     {
-        return orderDelivery::groupBy("status")->get();
+       return DB::table('orders_delivery')
+                ->groupBy('status')
+                ->get();
     }
 
     /**
