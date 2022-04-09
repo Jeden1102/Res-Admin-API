@@ -87,14 +87,14 @@ class OrdersDelivery extends Controller
                 'status'=>1,
                 'statusInfo'=>$request->info,
             ]);
-            Mail::to($request->email)->send(new OrderMenage($request->orderDetails));
+            // Mail::to($request->email)->send(new OrderMenage($request->orderDetails));
         }
         if($request->action==2){
             $order =  DB::table("orders_delivery")->where('id','=',$id)->update([
                 'status'=>2,
                 'statusInfo'=>$request->info,
             ]);
-            Mail::to($request->email)->send(new OrderMenage($request->orderDetails));
+            // Mail::to($request->email)->send(new OrderMenage($request->orderDetails));
         }
     }
 
