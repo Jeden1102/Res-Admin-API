@@ -7,6 +7,7 @@ use App\Models\orderDelivery;
 use Exception;
 //mail
 use App\Mail\Subscribe;
+use App\Mail\OrderMenage;
 use App\Models\Subscriber;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -86,12 +87,14 @@ class OrdersDelivery extends Controller
                 'status'=>1,
                 'statusInfo'=>$request->info,
             ]);
+            Mail::to($request->email)->send(new OrderMenage($request->orderDetails));
         }
         if($request->action==2){
             $order =  DB::table("orders_delivery")->where('id','=',$id)->update([
                 'status'=>2,
                 'statusInfo'=>$request->info,
             ]);
+            Mail::to($request->email)->send(new OrderMenage($request->orderDetails));
         }
     }
 
