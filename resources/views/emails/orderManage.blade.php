@@ -1,7 +1,6 @@
 @component('mail::message')
 # Introduction
-{{ $info->name }}}
-The body of your message.
+Your order has been confirmed :)))
 
 @component('mail::button', ['url' => ''])
 Button Text
