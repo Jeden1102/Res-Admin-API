@@ -1,5 +1,5 @@
 @component('mail::message')
-# Thank you {{ $info->name }}
+# Thank you {{ $info['name'] }}
 
 Your order has succesfully confirmed !:)
 <h2 style="color:#F47321">Ordered products:</h2>
