@@ -1,6 +1,6 @@
 @component('mail::message')
 # Introduction
-{{ $info->email }}
+{{ $info['email'] }}
 Your order has been confirmed :)))
 
 @component('mail::button', ['url' => ''])
