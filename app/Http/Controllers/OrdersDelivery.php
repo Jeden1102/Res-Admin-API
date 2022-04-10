@@ -97,6 +97,12 @@ class OrdersDelivery extends Controller
                 ]);
                 Mail::to($request->email)->send(new OrderMenage($request->orderDetails));
             }
+            if($request->action==3){
+                $order =  DB::table("orders_delivery")->where('id','=',$id)->update([
+                    'status'=>3,
+                ]);
+                Mail::to($request->email)->send(new OrderMenage($request->info));
+            }
         }catch(Exception $err){
             return$err;
         }

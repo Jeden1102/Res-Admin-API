@@ -25,6 +25,10 @@
         Please prepare the calculated money.
     </p>
 </div>
+@elseif($info['action']==3)
+<div>
+    <h2>Good news ! Your order has just been send, wait for the food and enjoy !</h2>
+</div>
 @else
 <div>
     Your order has been rejected !:(
